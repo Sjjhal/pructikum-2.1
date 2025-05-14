@@ -1,1 +1,31 @@
+package utils;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FilesystemUtilities {
+    public static List<String> loadFromFile(String path) throws IOException {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null)
+                lines.add(line);
+        }
+        return lines;
+    }
+
+    public static void saveToFile(String path, List<String> lines) throws IOException {
+        File file = new File(path);
+        File dir = file.getParentFile();
+        if (dir != null && !dir.exists()) {
+            dir.mkdirs();
+        }
+
+        try (PrintWriter writer = new PrintWriter(file)) {
+            for (String line : lines) {
+                writer.println(line);
+            }
+        }
+    }
+}
